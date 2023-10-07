@@ -1,5 +1,4 @@
 version: '3'
-name: work
 services:
   bun-app:
     build:
