@@ -1,4 +1,7 @@
 import NotionPageToHtml from "notion-page-to-html";
+import { Hono } from 'hono';
+
+const app = new Hono();
 
 const styles = `
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@400&display=swap" rel="stylesheet">
@@ -87,25 +90,20 @@ async function getPage(page: string) {
 	return htmlWithoutStyles + styles;
 }
 
-Bun.serve({
-	port: 8080,
-	async fetch(req) {
-		const url = new URL(req.url);
+app.get('/', (c) => c.html(homepage));
 
-		if (url.pathname === "/")
-			return new Response(homepage, {
-				headers: { "Content-Type": "text/html" },
-			});
-
-		// get page from pages list
-		const page = pages[url.pathname.slice(1)];
-
-		if (!page) return new Response("No Subject Found!");
-
-		return new Response(await getPage(page), {
-			headers: {
-				"Content-Type": "text/html",
-			},
-		});
-	},
+Object.keys(pages).forEach((key) => {
+  app.get(`/${key}`, async (c) => {
+    const page = pages[key];
+    if (!page) {
+      return c.notFound();
+    }
+    const pageHtml = await getPage(page);
+    return c.html(pageHtml);
+  });
 });
+
+export default {
+    port: 8080,
+    fetch: app.fetch,
+  }
