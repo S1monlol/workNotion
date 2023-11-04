@@ -1,15 +1,15 @@
 {
-	"dependencies": {
-		"@types/node": "^20.8.2",
-		"bun-types": "^1.0.5-canary.20231005T140125",
-		"hono": "^3.9.2",
-		"notion-page-to-html": "^1.2.0"
-	},
-	"scripts": {
-		"dev": "run-p dev:*",
-		"dev:wrangler": "wrangler pages dev dist --live-reload",
-		"dev:esbuild": "esbuild --bundle index.ts --format=esm --watch --outfile=dist/_worker.js",
-		"build": "esbuild --bundle index.ts --format=esm --outfile=dist/_worker.js",
-		"deploy": "wrangler pages publish dist"
-	}
+  "dependencies": {
+    "@types/node": "^20.8.2",
+    "esbuild": "^0.19.5",
+    "hono": "^3.9.2",
+    "notion-page-to-html": "^1.2.0"
+  },
+  "scripts": {
+    "dev": "run-p dev:*",
+    "dev:wrangler": "wrangler pages dev dist --live-reload",
+    "dev:esbuild": "esbuild --bundle index.ts --format=esm --watch --outfile=dist/_worker.js",
+    "build": "esbuild --bundle index.ts --format=esm --outfile=dist/_worker.js",
+    "deploy": "wrangler pages publish dist"
+  }
 }
